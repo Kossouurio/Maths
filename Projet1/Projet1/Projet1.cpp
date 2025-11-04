@@ -39,9 +39,17 @@ public:
 
 int main(int argc, char* argv[])
 {
-    std::cout << "Hello World!\n";
     Console console;
-    console.ShowCursor();
+    console.HideCursor();
+
+    console.Clear();
+    console.ResetCursortPosition();
     
+    std::cout << "Hello World!\n";
+    
+
+    
+    console.ShowCursor();
+    std::cin.get();
     return 0;
 }
