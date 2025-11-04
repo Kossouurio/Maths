@@ -1,5 +1,6 @@
 #include <iostream>
 #include <Windows.h>
+#include <vector>
 
 class Console
 {
@@ -35,19 +36,32 @@ public:
     {
         std::cout << "\033[2J";
     }
+
+
+    void Draw()
+    {
+        for (int i = 0; i < 20; i++)
+        {
+            for (int j = 0; j < 100; j++)
+            {
+                std::cout << '.';
+            }
+            std::cout << '\n';
+        }
+    }
 };
 
 int main(int argc, char* argv[])
 {
+    std::vector<char> pixels;
+    
     Console console;
     console.HideCursor();
 
     console.Clear();
     console.ResetCursortPosition();
     
-    std::cout << "Hello World!\n";
-    
-
+    console.Draw();
     
     console.ShowCursor();
     std::cin.get();
