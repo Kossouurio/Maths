@@ -4,51 +4,56 @@
 #include <vector>
 #include "File.h"
 
+#define M_PI 3.14159265358979323846
+
 class Settings
 {
 private:
-    int _height = 20;
-    int _width = 100;
+    int _Height = 20;
+    int _Width = 100;
+    int _MeshResolution = 32;
 public:
 
     Settings(int argc, char* argv[])
     {
+        _Height = 20;
+        _Width = 100;
+        _MeshResolution = 32;
+        
         for (int i = 1; i < argc; i++)
         {
             std::string arg = argv[i];
             if (arg == "-h" && i+1 < argc)
             {
-                _height = std::atoi(argv[i+1]);
+                _Height = std::atoi(argv[i+1]);
                 i++;
             }
             else if (arg == "-w" && i+1 < argc)
             {
-                _width = std::atoi(argv[i+1]);
+                _Width = std::atoi(argv[i+1]);
                 i++;
             }
+            else if (arg == "-r" && i+1 < argc)
+            {
+                _MeshResolution = std::atoi(argv[i+1]);
+            }
         }
-    }
-
-    void SetHeight(int n)
-    {
-        _height = n;
-    }
-    
-    void SetWidth(int n)
-    {
-        _width = n;
     }
     
     int GetHeight() const
     {
-        return _height;
+        return _Height;
     }
     
     int GetWidth() const
     {
-        return _width;
+        return _Width;
     }
-    
+
+    int GetMeshResolution() const
+    {
+        return _MeshResolution;
+    }
 };
 
 class Screen
@@ -125,9 +130,9 @@ public:
 
 struct Vertex
 {
-    int x;
-    int y;
-    int z;
+    float x;
+    float y;
+    float z;
 
     void Debug()
     {
@@ -136,8 +141,65 @@ struct Vertex
 };
 class Mesh
 {
-public:
+private:
     std::vector<Vertex> vertices;
+    int resolution;
+
+public:
+    Mesh(int resolution)
+        : resolution(resolution)
+    {
+    }
+
+    void GenerateCircle(float radius)
+    {
+        vertices.clear();
+        const float step = 2.0f * M_PI / resolution;
+
+        for (int i = 0; i <= resolution; ++i)
+        {
+            float angle = i * step;
+            Vertex v;
+            v.x = radius * cos(angle);
+            v.y = radius * sin(angle);
+            vertices.push_back(v);
+        }
+    }
+
+    void GenerateHalfCircle(float radius)
+    {
+        vertices.clear();
+        const float step = M_PI / resolution;
+
+        for (int i = 0; i <= resolution; ++i)
+        {
+            float angle = i * step;
+            Vertex v;
+            v.x = radius * cos(angle);
+            v.y = radius * sin(angle);
+            vertices.push_back(v);
+        }
+    }
+
+    void GenerateRectangle(float width, float height)
+    {
+        vertices.clear();
+
+        float halfW = width / 2.0f;
+        float halfH = height / 2.0f;
+
+        vertices.push_back({-halfW, -halfH, 0});
+        vertices.push_back({halfW, -halfH, 0});
+        vertices.push_back({halfW, halfH, 0});
+        vertices.push_back({-halfW, halfH, 0});
+        vertices.push_back({-halfW, -halfH, 0});
+    }
+
+    void GenerateSquare(float size)
+    {
+        GenerateRectangle(size, size);
+    }
+    
     void Debug()
     {
         for (int i = 0; i < vertices.size(); i++)
@@ -153,14 +215,25 @@ public:
 
 int main(int argc, char* argv[])
 {
-    // Settings settings(argc,argv);
-    // Screen screen(settings.GetWidth(), settings.GetHeight());
-    Mesh mmm;
-    mmm.vertices.push_back(Vertex{-1, -1, 0});
-    mmm.vertices.push_back(Vertex{-1, 1, 0});
-    mmm.vertices.push_back(Vertex{1, -1, 0});
-    mmm.vertices.push_back(Vertex{1, 1, 0});
-    mmm.Debug();
+    Settings settings(argc,argv);
+    Screen screen(settings.GetWidth(), settings.GetHeight());
+    Mesh mesh(settings.GetMeshResolution());
+    
+    // std::cout << "=== Circle ===" << std::endl;
+    // mesh.GenerateCircle(1.0f);
+    // mesh.Debug();
+    //
+    // std::cout << "\n=== Half Circle ===" << std::endl;
+    // mesh.GenerateHalfCircle(1.0f);
+    // mesh.Debug();
+    //
+    // std::cout << "\n=== Rectangle ===" << std::endl;
+    // mesh.GenerateRectangle(2.0f, 1.0f);
+    // mesh.Debug();
+    //
+    // std::cout << "\n=== Square ===" << std::endl;
+    // mesh.GenerateSquare(1.0f);
+    // mesh.Debug();
     
     return 0;
 }
