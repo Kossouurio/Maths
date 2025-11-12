@@ -7,23 +7,12 @@
 class Settings
 {
 private:
-    HANDLE hConsole;
-    DWORD mode;
-    
-    std::vector<char> _pixels;
-    
     int _height = 20;
     int _width = 100;
 public:
 
     Settings(int argc, char* argv[])
     {
-        hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-        mode = DWORD();
-
-        GetConsoleMode(hConsole, &mode);
-        SetConsoleMode(hConsole, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
-
         for (int i = 1; i < argc; i++)
         {
             std::string arg = argv[i];
@@ -38,6 +27,48 @@ public:
                 i++;
             }
         }
+    }
+
+    void SetHeight(int n)
+    {
+        _height = n;
+    }
+    
+    void SetWidth(int n)
+    {
+        _width = n;
+    }
+    
+    int GetHeight() const
+    {
+        return _height;
+    }
+    
+    int GetWidth() const
+    {
+        return _width;
+    }
+    
+};
+
+class Screen
+{
+private:
+    HANDLE hConsole;
+    DWORD mode;
+    
+    std::vector<char> _pixels;
+public:
+    Screen(int width, int height)
+    {
+        hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+        mode = DWORD();
+
+        GetConsoleMode(hConsole, &mode);
+        SetConsoleMode(hConsole, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
+
+        CreateScreen(width, height);
+        Draw();
     }
 
     void HideCursor()
@@ -60,11 +91,11 @@ public:
         std::cout << "\033[2J";
     }
     
-    void CreateScreen()
+    void CreateScreen(int width, int height)
     {
-        for (int y = 0; y < _height; y++)
+        for (int y = 0; y < height; y++)
         {
-            for (int x = 0; x < _width; x++)
+            for (int x = 0; x < width; x++)
             {
                 _pixels.push_back('.');
             }
@@ -85,39 +116,19 @@ public:
         
         ShowCursor();
     }
-
-    void SetHeight(int n)
-    {
-        _height = n;
-    }
     
-    void SetWidth(int n)
-    {
-        _width = n;
-    }
-    
-    int GetHeight() const
-    {
-        return _height;
-    }
-    
-    int GetWidth() const
-    {
-        return _width;
-    }
-
     std::vector<char> GetPixels()
     {
         return _pixels;
     }
 };
 
+
 int main(int argc, char* argv[])
 {
     Settings settings(argc,argv);
     
-    settings.CreateScreen();
-    settings.Draw();
+    Screen screen(settings.GetWidth(), settings.GetHeight());
     
     return 0;
 }
