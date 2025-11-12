@@ -123,12 +123,44 @@ public:
     }
 };
 
+struct Vertex
+{
+    int x;
+    int y;
+    int z;
+
+    void Debug()
+    {
+        std::cout << "{" << x << ", " << y << ", " << z << "}";
+    }
+};
+class Mesh
+{
+public:
+    std::vector<Vertex> vertices;
+    void Debug()
+    {
+        for (int i = 0; i < vertices.size(); i++)
+        {
+            vertices[i].Debug();
+            if (i < vertices.size() - 1)
+            {
+                std::cout << ", ";
+            }
+        }
+    }
+};
 
 int main(int argc, char* argv[])
 {
-    Settings settings(argc,argv);
-    
-    Screen screen(settings.GetWidth(), settings.GetHeight());
+    // Settings settings(argc,argv);
+    // Screen screen(settings.GetWidth(), settings.GetHeight());
+    Mesh mmm;
+    mmm.vertices.push_back(Vertex{-1, -1, 0});
+    mmm.vertices.push_back(Vertex{-1, 1, 0});
+    mmm.vertices.push_back(Vertex{1, -1, 0});
+    mmm.vertices.push_back(Vertex{1, 1, 0});
+    mmm.Debug();
     
     return 0;
 }
