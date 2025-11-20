@@ -12,7 +12,6 @@ Screen::Screen(int width, int height)
     SetConsoleMode(hConsole, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
 
     CreateScreen(width, height);
-    Draw();
 }
 
 void Screen::HideCursor()
@@ -39,11 +38,12 @@ void Screen::CreateScreen(int width, int height)
 {
     for (int y = 0; y < height; y++)
     {
+        std::vector<char> temp;
         for (int x = 0; x < width; x++)
         {
-            _pixels.push_back('.');
+            temp.push_back('.');
         }
-        _pixels.push_back('\n');
+        _pixels.push_back(temp);
     }
 }
 
@@ -53,9 +53,13 @@ void Screen::Draw()
     ResetCursortPosition();
     HideCursor();
         
-    for (char pixel : _pixels)
+    for (int y = 0; y < _height; y++)
     {
-        std::cout << pixel;
+        for (int x = 0; x < _width; x++)
+        {
+            std::cout << _pixels[y][x];
+        }
+        std::cout << '\n';
     }
         
     ShowCursor();
@@ -63,9 +67,8 @@ void Screen::Draw()
 
 void Screen::SetPixel(int x, int y, char color)
 {
-    if (x < 0 || x >= _width || y < 0 || y >= _height)
-        return;
-    _pixels[x + y * _width] = color;
+    if (x >= 0 && x < _width && y >= 0 && y < _height)
+        _pixels[y][x] = color;
 }
 
 void Screen::DrawMesh(Mesh& mesh)
@@ -73,11 +76,11 @@ void Screen::DrawMesh(Mesh& mesh)
     std::vector<Vertex> vertices = mesh.GetVertices();
     for (Vertex vertex : vertices)
     {
-        SetPixel(vertex.x+10, vertex.y+5, 'Q');
+        SetPixel((int)vertex.x+20, (int)vertex.y+5, '0');
     }
 }
 
-std::vector<char> Screen::GetPixels()
+std::vector<std::vector<char>> Screen::GetPixels()
 {
     return _pixels;
 }

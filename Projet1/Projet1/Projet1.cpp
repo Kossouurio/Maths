@@ -11,25 +11,26 @@ int main(int argc, char* argv[])
     Mesh mesh(settings.GetMeshResolution());
 
     
-    // std::cout << "=== Circle ===" << '\n';
-    // mesh.GenerateCircle(1.0f);
-    // mesh.Debug();
+    std::cout << "=== Circle ===" << '\n';
+    mesh.GenerateCircle(3.0f);
+    screen.DrawMesh(mesh);
+    screen.Draw();
     //
     // std::cout << "\n=== Half Circle ===" << '\n';
-    // mesh.GenerateHalfCircle(1.0f);
-    // mesh.Debug();
+    // mesh.GenerateHalfCircle(3.0f);
+    // screen.DrawMesh(mesh);
+    // screen.Draw();
     //
-    std::cout << "\n=== Rectangle ===" << '\n';
-    mesh.GenerateRectangle(2.0f, 1.0f);
-    screen.DrawMesh(mesh);
-    screen.SetPixel(0, 5, 'G');
-    screen.Draw();
-    
-    mesh.Debug();
+    // std::cout << "\n=== Rectangle ===" << '\n';
+    // mesh.GenerateRectangle(4.0f, 3.0f);
+    // screen.DrawMesh(mesh);
+    // screen.Draw();
     //
     // std::cout << "\n=== Square ===" << '\n';
-    // mesh.GenerateSquare(1.0f);
-    // mesh.Debug();
+    // mesh.GenerateSquare(5.0f);
+    // screen.DrawMesh(mesh);
+    // screen.SetPixel(1, 1, 'G');
+    // screen.Draw();
 
     std::cin.get();
     return 0;

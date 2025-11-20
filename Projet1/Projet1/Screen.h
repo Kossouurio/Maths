@@ -11,7 +11,7 @@ private:
     HANDLE hConsole;
     DWORD mode;
     
-    std::vector<char> _pixels;
+    std::vector<std::vector<char>> _pixels;
     int _width, _height;
 public:
     Screen(int width, int height);
@@ -32,5 +32,5 @@ public:
 
     void DrawMesh(Mesh& mesh);
     
-    std::vector<char> GetPixels();
+    std::vector<std::vector<char>> GetPixels();
 };
