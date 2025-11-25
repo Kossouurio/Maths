@@ -1,17 +1,19 @@
 ﻿#include "Screen.h"
 #include "Mesh.h"
+#include "Settings.h"
 
-Screen::Screen(int width, int height)
+Screen::Screen(Settings* settings)
 {
+    _Settings = settings;
     hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     mode = DWORD();
-    _width = width;
-    _height = height;
+    _width = settings->GetWidth();
+    _height = settings->GetHeight();
 
     GetConsoleMode(hConsole, &mode);
     SetConsoleMode(hConsole, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
 
-    CreateScreen(width, height);
+    CreateScreen(_width, _height);
 }
 
 void Screen::HideCursor()
@@ -76,7 +78,7 @@ void Screen::DrawMesh(Mesh& mesh)
     std::vector<Vertex> vertices = mesh.GetVertices();
     for (Vertex vertex : vertices)
     {
-        SetPixel((int)vertex.x+20, (int)vertex.y+5, '0');
+        SetPixel((int)vertex.x+20, (int)vertex.y+5, 'X');
     }
 }
 

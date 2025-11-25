@@ -23,6 +23,24 @@ Settings::Settings(int argc, char* argv[])
         {
             _MeshResolution = std::atoi(argv[i+1]);
         }
+        else if (arg == "-b" && i+1 < argc)
+        {
+            _ScreenBackground = std::atoi(argv[i+1]);
+            i++;
+        }
+        else if (arg == "-p" && i+1 < argc)
+        {
+            _ScreenMeshProjection = std::atoi(argv[i+1]);
+        }
+        else if (arg == "-s" && i+1 < argc)
+        {
+            _ScreenPosition = std::atoi(argv[i+1]);
+            i++;
+        }
+        else if (arg == "-m" && i+1 < argc)
+        {
+            _MeshPosition = std::atoi(argv[i+1]);
+        }
     }
 }
 
@@ -39,4 +57,24 @@ int Settings::GetWidth() const
 int Settings::GetMeshResolution() const
 {
     return _MeshResolution;
+}
+
+int Settings::GetScreenBackground() const
+{
+    return _ScreenBackground;
+}
+
+int Settings::GetScreenMeshProjection() const
+{
+    return _ScreenMeshProjection;
+}
+
+int Settings::GetScreenPosition() const
+{
+    return _ScreenPosition;
+}
+
+int Settings::GetMeshPosition() const
+{
+    return _MeshPosition;
 }

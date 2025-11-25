@@ -5,16 +5,18 @@
 
 #include "Mesh.h"
 
+class Settings;
 class Screen
 {
 private:
     HANDLE hConsole;
     DWORD mode;
     
+    Settings* _Settings;
     std::vector<std::vector<char>> _pixels;
     int _width, _height;
 public:
-    Screen(int width, int height);
+    Screen(Settings* settings);
 
     void HideCursor();
 

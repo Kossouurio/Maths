@@ -7,24 +7,24 @@
 int main(int argc, char* argv[])
 {
     Settings settings(argc,argv);
-    Screen screen(settings.GetWidth(), settings.GetHeight());
+    Screen screen(&settings);
     Mesh mesh(settings.GetMeshResolution());
 
     
-    std::cout << "=== Circle ===" << '\n';
-    mesh.GenerateCircle(3.0f);
-    screen.DrawMesh(mesh);
-    screen.Draw();
+    //std::cout << "=== Circle ===" << '\n';
+    //mesh.GenerateCircle(3.0f);
+    //screen.DrawMesh(mesh);
+    //screen.Draw();
     //
     // std::cout << "\n=== Half Circle ===" << '\n';
     // mesh.GenerateHalfCircle(3.0f);
     // screen.DrawMesh(mesh);
     // screen.Draw();
     //
-    // std::cout << "\n=== Rectangle ===" << '\n';
-    // mesh.GenerateRectangle(4.0f, 3.0f);
-    // screen.DrawMesh(mesh);
-    // screen.Draw();
+     std::cout << "\n=== Rectangle ===" << '\n';
+     mesh.GenerateRectangle(4.0f, 3.0f);
+     screen.DrawMesh(mesh);
+     screen.Draw();
     //
     // std::cout << "\n=== Square ===" << '\n';
     // mesh.GenerateSquare(5.0f);
