@@ -1,36 +1,32 @@
-﻿#pragma once
-#include <iostream>
+#pragma once
+#include <cstdio>
 #include <vector>
 
-#define M_PI 3.14159265358979323846
+class Settings;
 
 struct Vertex
 {
+    void Debug() const { std::printf("[x=%5.2f, y=%5.2f, z=%5.2f]\n", x, y, z); }
     float x;
     float y;
     float z;
-
-    void Debug();
 };
 
 class Mesh
 {
-private:
-    std::vector<Vertex> vertices;
-    int resolution;
-
-public:
-    Mesh(int resolution);
-
+    public:
+    Mesh(Settings const& settings);
+    std::vector<Vertex> const& GetVertices() const { return m_vertices; }
     void GenerateCircle(float radius);
-
     void GenerateHalfCircle(float radius);
-
     void GenerateRectangle(float width, float height);
+    void GenerateSquare(float side);
+    void Debug() const;
 
-    void GenerateSquare(float size);
+    private:
+    void _GenerateSector(float radius, float angle);
 
-    std::vector<Vertex> GetVertices();
-    
-    void Debug();
+    private:
+    std::vector<Vertex> m_vertices;
+    int m_resolution;
 };

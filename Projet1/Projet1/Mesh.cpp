@@ -1,94 +1,62 @@
-﻿#include "Mesh.h"
+#include <cmath>
+#include "Mesh.h"
+#include "Settings.h"
 
-void Vertex::Debug()
-{
-    std::cout << "{" << x << ", " << y << ", " << z << "}";
-}
+constexpr float PI = 3.14159265f;
 
-Mesh::Mesh(int resolution)
-    : resolution(resolution)
+Mesh::Mesh(Settings const& settings)
+: m_resolution(settings.GetMeshResolution())
 {
 }
 
 void Mesh::GenerateCircle(float radius)
 {
-    vertices.clear();
-
-    for (int i = 0; i < resolution; ++i)
-    {
-        float angle = 2.0f * M_PI * i / resolution;
-        Vertex v;
-        v.x = radius * cos(angle);
-        v.y = radius * sin(angle);
-        v.z = 0.0f;
-        vertices.push_back(v);
-    }
+    _GenerateSector(radius, 2 * PI);
 }
 
 void Mesh::GenerateHalfCircle(float radius)
 {
-    vertices.clear();
-
-    for (int i = 0; i < resolution; ++i)
-    {
-        float angle = M_PI * i / (resolution - 1);
-        Vertex v;
-        v.x = radius * cos(angle);
-        v.y = radius * sin(angle);
-        v.z = 0.0f;
-        vertices.push_back(v);
-    }
+    _GenerateSector(radius, PI);
 }
 
 void Mesh::GenerateRectangle(float width, float height)
 {
-    vertices.clear();
-
-    int maxPoints = resolution * resolution;
-    Vertex* points = new Vertex[maxPoints];
-    int pointCount = 0;
-
-    float stepX = width / resolution;
-    float stepY = height / resolution;
-
-    for (int y = 0; y < resolution; ++y)
+    m_vertices.resize(m_resolution * m_resolution);
+    for(int i = 0; i < m_resolution; i++)
     {
-        for (int x = 0; x < resolution; ++x)
+        for(int j = 0; j < m_resolution; j++)
         {
-            points[pointCount].x = (x * stepX) - (width / 2.0f);
-            points[pointCount].y = (y * stepY) - (height / 2.0f);
-            points[pointCount].z = 0.0f;
-            pointCount++;
+            m_vertices[m_resolution * i + j].x = (1.f*i / (m_resolution - 1) - 0.5f) * width;
+            m_vertices[m_resolution * i + j].y = (1.f*j / (m_resolution - 1) - 0.5f) * height;
+            m_vertices[m_resolution * i + j].z = 0.f;
         }
     }
+}
+void Mesh::GenerateSquare(float side)
+{
+    GenerateRectangle(side, side);
+}
 
-    for (int i = 0; i < pointCount; ++i)
+void Mesh::Debug() const
+{
+    for(Vertex const& vertex : m_vertices)
     {
-        vertices.push_back(points[i]);
+        vertex.Debug();
     }
-
-    delete[] points;
 }
 
-void Mesh::GenerateSquare(float size)
+void Mesh::_GenerateSector(float radius, float angle)
 {
-    GenerateRectangle(size, size);
-}
-
-std::vector<Vertex> Mesh::GetVertices()
-{
-    return vertices;
-}
-
-void Mesh::Debug()
-{
-    std::cout << "Mesh with " << vertices.size() << " vertices:" << '\n';
-    for (int i = 0; i < vertices.size(); i++)
+    m_vertices.resize(m_resolution * m_resolution);
+    for(int i = 0; i < m_resolution; i++)
     {
-        vertices[i].Debug();
-        if (i < vertices.size() - 1)
+        float r = (radius * i) / (m_resolution - 1);
+        for(int j = 0; j < m_resolution; j++)
         {
-            std::cout << ", ";
+            float theta = (angle * j) / (m_resolution - 1);
+            m_vertices[m_resolution * i + j].x = r * std::cos(theta);
+            m_vertices[m_resolution * i + j].y = r * std::sin(theta);
+            m_vertices[m_resolution * i + j].z = 0.f;
         }
     }
 }

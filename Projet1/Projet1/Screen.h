@@ -1,38 +1,30 @@
-﻿#pragma once
-#include <iostream>
+#pragma once
 #include <vector>
-#include <Windows.h>
-
-#include "Mesh.h"
 
 class Settings;
+class Mesh;
+struct Vertex;
+
 class Screen
 {
-private:
-    HANDLE hConsole;
-    DWORD mode;
-    
-    Settings* _Settings;
-    std::vector<std::vector<char>> _pixels;
-    int _width, _height;
-public:
-    Screen(Settings* settings);
+    public:
+    Screen(Settings const& settings);
+    void Display() const;
+    void Display(Mesh const& mesh);
 
-    void HideCursor();
+    private:
+    void _ProjectMesh(Mesh const& mesh);
+    void _ProjectInCenterScreenSpace(Vertex& vertex);
+    void _ProjectInTopLeftScreenSpace(Vertex& vertex);
+    bool _IsVertexInScreen(int u, int v);
 
-    void ShowCursor();
-
-    void ResetCursortPosition();
-
-    void Clear();
-
-    void CreateScreen(int width, int height);
-
-    void Draw();
-
-    void SetPixel(int x, int y, char color);
-
-    void DrawMesh(Mesh& mesh);
-    
-    std::vector<std::vector<char>> GetPixels();
+    private:
+    int m_width;
+    int m_height;
+    float m_zPosition;
+    char m_background;
+    char m_meshProjection;
+    float m_meshZPosition;
+    std::vector<char> m_pixels;
+    std::vector<float> m_oozBuffer;
 };

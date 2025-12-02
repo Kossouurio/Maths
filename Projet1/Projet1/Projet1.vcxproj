@@ -154,8 +154,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="Projet1.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="Settings.cpp" />
   </ItemGroup>
