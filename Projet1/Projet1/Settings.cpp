@@ -7,7 +7,7 @@ Settings::Settings(int argc, char** argv)
 , m_screenBackground(' ')
 , m_screenMeshProjection('X')
 , m_screenPosition(3.33f)
-, m_meshResolution(32)
+, m_meshResolution(120)
 , m_meshPosition(5.f)
 {
     _ParseArguments(argc, argv);
