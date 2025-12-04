@@ -43,6 +43,7 @@ int main(int argc, char** argv)
     std::cout << "Rectangle 10x20:" << '\n';
     screen.Display(mesh);
     mesh.GenerateSquare(20.f);
+    mesh.RotateDegrees(45.f, Axis::Z);
     std::cout << "Square 20x20:" << '\n';
     screen.Display(mesh);
     mesh.GenerateCircle(15.f);
@@ -50,8 +51,9 @@ int main(int argc, char** argv)
     screen.Display(mesh);
     mesh.GenerateHalfCircle(15.f);
     std::cout << "Half Circle radius 15:" << '\n';
+    mesh.RotateDegrees(90.f, Axis::Z);
     screen.Display(mesh);
-    mesh.GenerateTorus(10.f, 1.f);
+    mesh.GenerateTorus(4.f, 0.9f);
     mesh.RotateDegrees(90.f, Axis::X);
     std::cout << "Torus radius 10:" << '\n';
     screen.Display(mesh);

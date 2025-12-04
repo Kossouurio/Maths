@@ -6,29 +6,24 @@ constexpr float PI = 3.14159265f;
 
 void Vertex::Rotate(float angle, Axis axis)
 {
+    Vertex prev = *this;
+    
     float cosAngle = std::cos(angle);
     float sinAngle = std::sin(angle);
-    float newX, newY, newZ;
     
     switch(axis)
     {
     case Axis::X:
-        newY = y * cosAngle - z * sinAngle;
-        newZ = y * sinAngle + z * cosAngle;
-        y = newY;
-        z = newZ;
+        y = prev.y * cosAngle - prev.z * sinAngle;
+        z = prev.y * sinAngle + prev.z * cosAngle;
         break;
     case Axis::Y:
-        newX = x * cosAngle + z * sinAngle;
-        newZ = -x * sinAngle + z * cosAngle;
-        x = newX;
-        z = newZ;
+        x = prev.x * cosAngle + prev.z * sinAngle;
+        z = -prev.x * sinAngle + prev.z * cosAngle;
         break;
     case Axis::Z:
-        newX = x * cosAngle - y * sinAngle;
-        newY = x * sinAngle + y * cosAngle;
-        x = newX;
-        y = newY;
+        x = prev.x * cosAngle - prev.y * sinAngle;
+        y = prev.x * sinAngle + prev.y * cosAngle;
         break;
     }
 }
@@ -73,40 +68,14 @@ void Mesh::GenerateSquare(float side)
 
 void Mesh::GenerateTorus(float majorRadius, float minorRadius)
 {
-    // // theta goes around the cross-sectional circle of a torus
-    // for (float theta=0; theta < 2*pi; theta += theta_spacing)
-    // {
-    //     // precompute sines and cosines of theta
-    //     float costheta = cos(theta), sintheta = sin(theta);
-    //
-    //     // phi goes around the center of revolution of a torus
-    //     for(float phi=0; phi < 2*pi; phi += phi_spacing)
-    //     {
-    //         // precompute sines and cosines of phi
-    //         float cosphi = cos(phi), sinphi = sin(phi);
-    //
-    //         // the x,y coordinate of the circle, before revolving (factored
-    //         // out of the above equations)
-    //         float circlex = R2 + R1*costheta;
-    //         float circley = R1*sintheta;
-    //
-    //         // final 3D (x,y,z) coordinate after rotations, directly from
-    //         // our math above
-    //         float x = circlex*(cosB*cosphi + sinA*sinB*sinphi)
-    //           - circley*cosA*sinB; 
-    //         float y = circlex*(sinB*cosphi - sinA*cosB*sinphi)
-    //           + circley*cosA*cosB;
-    //         float z = K2 + cosA*circlex*sinphi + circley*sinA;
-    //         float ooz = 1/z;  // "one over z"
-    //   
-    //         // x and y projection.  note that y is negated here, because y
-    //         // goes up in 3D space but down on 2D displays.
-    //         int xp = (int) (screen_width/2 + K1*ooz*x);
-    //         int yp = (int) (screen_height/2 - K1*ooz*y);
-    //     }
-    // }
+    /// Parametric formula
+    ///x(θ,φ)=(R+r⋅cos(φ))cos(θ)
+    ///y(θ,φ)=(R+r⋅cos(φ))sin(θ)
+    ///z(θ,φ)=r⋅sin(φ)
+    // ( x 2 + y 2 − R ) 2 + z 2 = r 2
     
     m_vertices.resize(m_resolution * m_resolution);
+    
     for (int i = 0; i < m_resolution; ++i)
     {
         float u = 2.0f * PI * i / m_resolution;
