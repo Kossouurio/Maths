@@ -1,4 +1,5 @@
 #include <iostream>
+#include <signal.h>
 #include <windows.h>
 #include "Settings.h"
 #include "Screen.h"
@@ -30,8 +31,15 @@ void SetCursorVisible(bool visible)
     }
 }
 
+void OnKill(int signum)
+{
+    ClearConsole();
+    SetCursorVisible(true);
+}
+
 int main(int argc, char** argv)
 {
+    signal(SIGINT, OnKill);
     InitConsole();
     ClearConsole();
     SetCursorVisible(false);
@@ -60,8 +68,8 @@ int main(int argc, char** argv)
     {
         mesh.RotateDegrees(1, Axis::X);
         mesh.RotateDegrees(1, Axis::Y);
+        mesh.RotateDegrees(1, Axis::Z);
         screen.Display(mesh);
-        Sleep(1);
         std::cout << "\x1b[H"; // Set cursor pos to "home" position (0,0)
     }
 
