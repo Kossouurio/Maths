@@ -39,24 +39,31 @@ int main(int argc, char** argv)
     Screen screen(settings);
     screen.Display();
     Mesh mesh(settings);
-    mesh.GenerateRectangle(10.f, 20.f);
     std::cout << "Rectangle 10x20:" << '\n';
+    mesh.GenerateRectangle(10.f, 20.f);
     screen.Display(mesh);
+    std::cout << "Square 20x20:" << '\n';
     mesh.GenerateSquare(20.f);
     mesh.RotateDegrees(45.f, Axis::Z);
-    std::cout << "Square 20x20:" << '\n';
     screen.Display(mesh);
-    mesh.GenerateCircle(15.f);
     std::cout << "Circle radius 15:" << '\n';
+    mesh.GenerateCircle(15.f);
     screen.Display(mesh);
-    mesh.GenerateHalfCircle(15.f);
     std::cout << "Half Circle radius 15:" << '\n';
+    mesh.GenerateHalfCircle(15.f);
     mesh.RotateDegrees(90.f, Axis::Z);
     screen.Display(mesh);
-    mesh.GenerateTorus(4.f, 0.9f);
-    mesh.RotateDegrees(90.f, Axis::X);
+    ClearConsole();
     std::cout << "Torus radius 10:" << '\n';
-    screen.Display(mesh);
+    mesh.GenerateTorus(4.f, 0.9f);
+    while (true)
+    {
+        mesh.RotateDegrees(1, Axis::X);
+        mesh.RotateDegrees(1, Axis::Y);
+        screen.Display(mesh);
+        Sleep(1);
+        std::cout << "\x1b[H"; // Set cursor pos to "home" position (0,0)
+    }
 
     std::cin.get();
     return 0;
