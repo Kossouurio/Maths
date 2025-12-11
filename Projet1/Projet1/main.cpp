@@ -64,11 +64,14 @@ int main(int argc, char** argv)
     ClearConsole();
     std::cout << "Torus radius 10:" << '\n';
     mesh.GenerateTorus(4.f, 0.9f);
+    int frame = 0;
     while (true)
     {
-        mesh.RotateDegrees(1, Axis::X);
-        mesh.RotateDegrees(1, Axis::Y);
-        mesh.RotateDegrees(1, Axis::Z);
+        Sleep(settings.GetFrameDuration());
+
+        mesh.Rotate(settings.GetMeshRotationXPerFrame(), Axis::X);
+        mesh.Rotate(settings.GetMeshRotationYPerFrame(), Axis::Y);
+        mesh.Rotate(settings.GetMeshRotationZPerFrame(), Axis::Z);
         screen.Display(mesh);
         std::cout << "\x1b[H"; // Set cursor pos to "home" position (0,0)
     }
