@@ -12,7 +12,7 @@ Settings::Settings(int argc, char** argv)
 , m_xAxis(0.02f)
 , m_yAxis(0.04f)
 , m_zAxis(0.0f)
-, m_frameDuration(0)
+, m_frameDuration(1)
 {
     _ParseArguments(argc, argv);
 }

@@ -96,6 +96,10 @@ void Mesh::GenerateTorus(float majorRadius, float minorRadius)
             m_vertices[idx].x = x;
             m_vertices[idx].y = y;
             m_vertices[idx].z = z;
+
+            m_vertices[idx].nx = cosu;
+            m_vertices[idx].ny = sinu;
+            m_vertices[idx].nz = 0.0f;
         }
     }
 }
@@ -137,6 +141,10 @@ void Mesh::_GenerateSector(float radius, float angle)
             m_vertices[m_resolution * i + j].x = r * std::cos(theta);
             m_vertices[m_resolution * i + j].y = r * std::sin(theta);
             m_vertices[m_resolution * i + j].z = 0.f;
+
+            m_vertices[m_resolution * i + j].nx = std::cos(theta);
+            m_vertices[m_resolution * i + j].ny = std::sin(theta);
+            m_vertices[m_resolution * i + j].nz = 0.f;
         }
     }
 }

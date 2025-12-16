@@ -18,6 +18,11 @@ struct Vertex
     float y;
     float z;
 
+    float nx;
+    float ny;
+    float nz;
+
+
     void Rotate(float angle, Axis axis);
     void RotateDegrees(float angleDeg, Axis axis);
 };
